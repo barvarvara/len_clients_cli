@@ -35,3 +35,23 @@ class Visit(base):
 
     def __str__(self):
         return f"Дата посещения: {self.visit_date}, Описание: {self.description}"
+
+
+class Certificate(base):
+    __tablename__ = 'certificates'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    purchase_date = Column(String)
+    given_date = Column(String, nullable=True)
+    purchaser_id = Column(Integer, ForeignKey('clients.id'))
+    recipient_id = Column(Integer, ForeignKey('clients.id'), nullable=True)
+    price = Column(Float)
+    balance = Column(Float)
+
+    purchaser = relationship("Client", back_populates="certificates_purchased", foreign_keys=[purchaser_id])
+    recipient = relationship("Client", back_populates="certificates_received", foreign_keys=[recipient_id])
+
+    def __str__(self):
+        purchaser_str = f"Покупатель: {self.purchaser.id}"
+        recipient_str = f", Вручен: {self.recipient.id}" if self.recipient_id else ", Еще не вручен"
+        return f"Сертификат ID: {self.id}, Дата покупки: {self.purchase_date}, {purchaser_str}{recipient_str}, Цена: {self.price}, Остаток: {self.balance}"
