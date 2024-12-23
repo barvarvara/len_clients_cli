@@ -9,20 +9,30 @@ from cli import (
 )
 from database import get_db
 
+MENU_OPTIONS = {
+    "1": "Добавить клиента",
+    "2": "Вывести всех клиентов",
+    "3": "Вывести посещения клиента",
+    "4": "Добавить сертификат",
+    "5": "Вывести все сертификаты",
+    "6": "Вывести сертификаты клиента",
+    "7": "Выход",
+}
+
+
+def _display_menu():
+    """Отображает меню пользователю."""
+    print("\nМеню:")
+    for key, value in MENU_OPTIONS.items():
+        print(f"{key}. {value}")
+    return input("Выберите действие: ")
+
 
 def main():
     while True:
-        print("\nМеню:")
-        print("1. Добавить клиента")
-        print("2. Вывести всех клиентов")
-        print("3. Вывести посещения клиента")
-        print("4. Добавить сертификат")
-        print("5. Вывести все сертификаты")
-        print("6. Вывести сертификаты клиента")
-        print("7. Выход")
-        choice = input("Выберите действие: ")
+        choice = _display_menu()
 
-        db = next(get_db())  # Получаем сессию базы данных через генератор
+        db = next(get_db())
 
         if choice == "1":
             add_client_from_console(db)
